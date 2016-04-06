@@ -1,0 +1,663 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+     <title>Menu</title>
+     <script 
+       src="https://sapui5.netweaver.ondemand.com/resources/sap-ui-core.js"
+       type="text/javascript" 
+       id="sap-ui-bootstrap" 
+		data-sap-ui-libs="sap.ui.ux3, sap.ui.commons, sap.m, sap.ui.core"
+       data-sap-ui-theme="sap_goldreflection">
+    </script>
+    
+	<script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
+	
+    <script type="text/javascript">
+    sap.ui.jsview("menuAdmin.menu", {
+    	
+		getControllerName : function() {
+						return "menuAdmin.menu";
+		},
+		
+		createContent : function(oController) {
+			var oLayout = new sap.ui.commons.layout.MatrixLayout({
+							id : "matrixLayout",
+							width: '100%',
+							layoutFixed : false
+			});
+			var buttonPanel = new sap.ui.commons.Panel("butPanel",
+					{
+						borderDesign: sap.ui.commons.enums.BorderDesign.Box,
+						areaDesign: sap.ui.commons.enums.AreaDesign.Fill,
+						title: new sap.ui.core.Title("butTitle",{text: "Configure"}),
+						content:[
+							new sap.m.VBox("butVBox",
+							{
+								fitContainer: true,   
+		     			        alignItems: sap.m.FlexAlignItems.Center,
+		     			        justifyContent :  sap.m.FlexJustifyContent.SpaceBetween,
+								width: '100%',
+								items:[
+									new sap.m.HBox("DatePickBox",
+									{
+										fitContainer: true,   
+				     			        alignItems: sap.m.FlexAlignItems.Center,
+				     			        justifyContent :  sap.m.FlexJustifyContent.SpaceBetween,
+										width: '50%',
+										items:[
+												new sap.ui.commons.Label({
+													text:"Week Starting",
+													design: sap.ui.commons.LabelDesign.Bold,
+													wrapping: true,
+													textAlign: sap.ui.core.TextAlign.Center,
+													width: '100%'
+												}),
+												
+												new sap.ui.commons.DatePicker("butDPicker",{
+													change: datePicked
+												})
+											]
+									}),
+									new sap.m.HBox("buttonsBox",
+										{
+										fitContainer: true,   
+				     			        alignItems: sap.m.FlexAlignItems.Stretch,
+				     			        justifyContent :  sap.m.FlexJustifyContent.SpaceBetween,
+										width: '50%',
+										items:[
+									
+												new sap.ui.commons.Button({
+													width: '100%',
+													text:'Clear Fields', 
+													style: sap.ui.commons.ButtonStyle.Reject,
+													press: clearFields
+												}),
+												new sap.ui.commons.Button({
+													width: '100%',
+													text:'Reload data', 
+													style: sap.ui.commons.ButtonStyle.Emph,
+													press: dataLoad
+												}),
+												new sap.ui.commons.Button({
+													width: '100%',
+													text:'Save Menu', 
+													style: sap.ui.commons.ButtonStyle.Accept,
+													press: updateMenu
+												})
+										]})
+								]
+							})
+						]
+					});
+			
+			var monPanel = new sap.ui.commons.Panel("monPanel",
+			{
+					borderDesign: sap.ui.commons.enums.BorderDesign.Box,
+					areaDesign: sap.ui.commons.enums.AreaDesign.Fill,
+					title: new sap.ui.core.Title("monTitle",{text: "Monday"}),
+					content:[
+						new sap.ui.layout.VerticalLayout("monVBox",
+						{
+						width: '100%',
+						content:[
+								new sap.ui.commons.Label({
+									text:"Starter",
+									design: sap.ui.commons.LabelDesign.Bold,
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("monStarter1",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("monStarter2",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.Label({
+									text:"Main",
+									design: sap.ui.commons.LabelDesign.Bold,
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("monMain1",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("monMain2",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("monMain3",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.Label({
+									text:"Dessert",
+									design: sap.ui.commons.LabelDesign.Bold,
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("monDessert",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								})
+						
+							]
+							})
+						]
+			});
+			
+			var tuePanel = new sap.ui.commons.Panel("tuePanel",
+					{
+							borderDesign: sap.ui.commons.enums.BorderDesign.Box,
+							areaDesign: sap.ui.commons.enums.AreaDesign.Fill,
+							title: new sap.ui.core.Title("tueTitle",{text: "Tuesday"}),
+							content:[
+								new sap.ui.layout.VerticalLayout("tueVBox",
+								{
+								width: '100%',
+								content:[
+										new sap.ui.commons.Label({
+											text:"Starter",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("tueStarter1",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("tueStarter2",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.Label({
+											text:"Main",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("tueMain1",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("tueMain2",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("tueMain3",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.Label({
+											text:"Dessert",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("tueDessert",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										})
+								
+									]
+									})
+								]
+					});
+			
+			var wedPanel = new sap.ui.commons.Panel("wedPanel",
+					{
+							borderDesign: sap.ui.commons.enums.BorderDesign.Box,
+							areaDesign: sap.ui.commons.enums.AreaDesign.Fill,
+							title: new sap.ui.core.Title("wedTitle",{text: "Wednesday"}),
+							content:[
+								new sap.ui.layout.VerticalLayout("wedVBox",
+								{
+								width: '100%',
+								content:[
+										new sap.ui.commons.Label({
+											text:"Starter",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("wedStarter1",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("wedStarter2",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.Label({
+											text:"Main",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("wedMain1",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("wedMain2",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("wedMain3",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.Label({
+											text:"Dessert",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("wedDessert",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										})
+								
+									]
+									})
+								]
+					});
+			
+			var thuPanel = new sap.ui.commons.Panel("thuPanel",
+					{
+							borderDesign: sap.ui.commons.enums.BorderDesign.Box,
+							areaDesign: sap.ui.commons.enums.AreaDesign.Fill,
+							title: new sap.ui.core.Title("thuTitle",{text: "Thursday"}),
+							content:[
+								new sap.ui.layout.VerticalLayout("thuVBox",
+								{
+								width: '100%',
+								content:[
+										new sap.ui.commons.Label({
+											text:"Starter",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("thuStarter1",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("thuStarter2",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.Label({
+											text:"Main",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("thuMain1",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("thuMain2",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("thuMain3",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.Label({
+											text:"Dessert",
+											design: sap.ui.commons.LabelDesign.Bold,
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										}),
+										new sap.ui.commons.TextField("thuDessert",{
+											wrapping: true,
+											textAlign: sap.ui.core.TextAlign.Center,
+											width: '100%'
+										})
+								
+									]
+									})
+								]
+					});
+			
+			
+			var friPanel = new sap.ui.commons.Panel("friPanel",
+			{
+					borderDesign: sap.ui.commons.enums.BorderDesign.Box,
+					areaDesign: sap.ui.commons.enums.AreaDesign.Fill,
+					title: new sap.ui.core.Title("friTitle",{text: "Friday"}),
+					content:[
+						new sap.ui.layout.VerticalLayout("friVBox",
+						{
+						width: '100%',
+						content:[
+								new sap.ui.commons.Label({
+									text:"Starter",
+									design: sap.ui.commons.LabelDesign.Bold,
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("friStarter1",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("friStarter2",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.Label({
+									text:"Main",
+									design: sap.ui.commons.LabelDesign.Bold,
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("friMain1",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("friMain2",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("friMain3",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.Label({
+									text:"Dessert",
+									design: sap.ui.commons.LabelDesign.Bold,
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								}),
+								new sap.ui.commons.TextField("friDessert",{
+									wrapping: true,
+									textAlign: sap.ui.core.TextAlign.Center,
+									width: '100%'
+								})
+						
+							]
+							})
+						]
+			});
+			oLayout.createRow(buttonPanel, monPanel, tuePanel, wedPanel);
+			oLayout.createRow(wedPanel, thuPanel, friPanel);
+
+
+			return oLayout;
+			
+		}
+	});
+ 	sap.ui.controller("menuAdmin.menu", {
+ 		
+ 	});
+    
+    function datePicked(){
+    	var dateSelect = sap.ui.getCore().getElementById("butDPicker").getYyyymmdd();
+    	
+    	year = dateSelect.substr(0,4);
+    	month = dateSelect.substr(4,2);
+    	day = dateSelect.substr(6,2);
+    	
+    	var newDate = new Date(year, month -1, day);
+    	
+    	newDate.setDate(1 + newDate.getDate()-newDate.getDay());
+		monDate = pad(newDate.getDate()) + "/" + pad(newDate.getMonth()+1) +"/" + newDate.getFullYear();
+		
+		newDate.setDate(newDate.getDate()+1);
+    	tueDate = pad(newDate.getDate()) + "/" + pad(newDate.getMonth()+1) +"/" + newDate.getFullYear();
+    	
+    	newDate.setDate(newDate.getDate()+1);
+    	wedDate = pad(newDate.getDate()) + "/" + pad(newDate.getMonth()+1) +"/" + newDate.getFullYear();
+    	
+    	newDate.setDate(newDate.getDate()+1);
+    	thuDate = pad(newDate.getDate()) + "/" + pad(newDate.getMonth()+1) +"/" + newDate.getFullYear();
+    	
+    	newDate.setDate(newDate.getDate()+1);
+    	friDate = pad(newDate.getDate()) + "/" + pad(newDate.getMonth()+1) +"/" + newDate.getFullYear();
+    	
+   		sap.ui.getCore().getElementById("monTitle").setText("Monday " + monDate);
+       	sap.ui.getCore().getElementById("tueTitle").setText("Tuesday " + tueDate);
+       	sap.ui.getCore().getElementById("wedTitle").setText("Wednesday " + wedDate);
+       	sap.ui.getCore().getElementById("thuTitle").setText("Thursday " + thuDate);
+       	sap.ui.getCore().getElementById("friTitle").setText("Friday " + friDate);
+       	
+       	
+    }
+    
+    function pad(curr_date){
+   		curr_date = curr_date > 9 ? curr_date : "0" + curr_date;
+   		return curr_date;
+   	}
+     
+  	function dataLoad(){
+		var Menu = Parse.Object.extend("gMenu");
+		var query = new Parse.Query(Menu);
+		query.descending("createdAt");
+		
+		query.first({success: function(result){
+				  var jsonmenu = result.get('JSONMenu');
+				  oModel = new sap.ui.model.json.JSONModel(jsonmenu);
+			      sap.ui.getCore().setModel(oModel);	     
+			      monDate = oModel.getProperty('/menu')[0].date;
+			      sap.ui.getCore().getElementById("monTitle").setText("Monday " + oModel.getProperty('/menu')[0].date);
+			      sap.ui.getCore().getElementById("monStarter1").setValue(oModel.getProperty('/menu')[0].starter2);
+			      sap.ui.getCore().getElementById("monStarter2").setValue(oModel.getProperty('/menu')[0].starter2);
+			      sap.ui.getCore().getElementById("monMain1").setValue(oModel.getProperty('/menu')[0].main1);
+			      sap.ui.getCore().getElementById("monMain2").setValue(oModel.getProperty('/menu')[0].main2);
+			      sap.ui.getCore().getElementById("monMain3").setValue(oModel.getProperty('/menu')[0].mainveg);
+			      sap.ui.getCore().getElementById("monDessert").setValue(oModel.getProperty('/menu')[0].dessert);
+			      
+			      tueDate = oModel.getProperty('/menu')[1].date;
+			      sap.ui.getCore().getElementById("tueTitle").setText("Tuesday " + oModel.getProperty('/menu')[1].date);
+			      sap.ui.getCore().getElementById("tueStarter1").setValue(oModel.getProperty('/menu')[1].starter1);
+			      sap.ui.getCore().getElementById("tueStarter2").setValue(oModel.getProperty('/menu')[1].starter2);
+			      sap.ui.getCore().getElementById("tueMain1").setValue(oModel.getProperty('/menu')[1].main1);
+			      sap.ui.getCore().getElementById("tueMain2").setValue(oModel.getProperty('/menu')[1].main2);
+			      sap.ui.getCore().getElementById("tueMain3").setValue(oModel.getProperty('/menu')[1].mainveg);
+			      sap.ui.getCore().getElementById("tueDessert").setValue(oModel.getProperty('/menu')[1].dessert);
+			      
+			      wedDate = oModel.getProperty('/menu')[2].date;
+			      sap.ui.getCore().getElementById("wedTitle").setText("Wednesday " + oModel.getProperty('/menu')[2].date);
+			      sap.ui.getCore().getElementById("wedStarter1").setValue(oModel.getProperty('/menu')[2].starter1);
+			      sap.ui.getCore().getElementById("wedStarter2").setValue(oModel.getProperty('/menu')[2].starter2);
+			      sap.ui.getCore().getElementById("wedMain1").setValue(oModel.getProperty('/menu')[2].main1);
+			      sap.ui.getCore().getElementById("wedMain2").setValue(oModel.getProperty('/menu')[2].main2);
+			      sap.ui.getCore().getElementById("wedMain3").setValue(oModel.getProperty('/menu')[2].mainveg);
+			      sap.ui.getCore().getElementById("wedDessert").setValue(oModel.getProperty('/menu')[2].dessert);
+			      
+			      thuDate = oModel.getProperty('/menu')[3].date;
+			      sap.ui.getCore().getElementById("thuTitle").setText("Thursday " + oModel.getProperty('/menu')[3].date);
+			      sap.ui.getCore().getElementById("thuStarter1").setValue(oModel.getProperty('/menu')[3].starter1);
+			      sap.ui.getCore().getElementById("thuStarter2").setValue(oModel.getProperty('/menu')[3].starter2);
+			      sap.ui.getCore().getElementById("thuMain1").setValue(oModel.getProperty('/menu')[3].main1);
+			      sap.ui.getCore().getElementById("thuMain2").setValue(oModel.getProperty('/menu')[3].main2);
+			      sap.ui.getCore().getElementById("thuMain3").setValue(oModel.getProperty('/menu')[3].mainveg);
+			      sap.ui.getCore().getElementById("thuDessert").setValue(oModel.getProperty('/menu')[3].dessert);
+			      
+			      friDate = oModel.getProperty('/menu')[4].date;
+			      sap.ui.getCore().getElementById("friTitle").setText("Friday " + oModel.getProperty('/menu')[4].date);
+			      sap.ui.getCore().getElementById("friStarter1").setValue(oModel.getProperty('/menu')[4].starter1);
+			      sap.ui.getCore().getElementById("friStarter2").setValue(oModel.getProperty('/menu')[4].starter2);
+			      sap.ui.getCore().getElementById("friMain1").setValue(oModel.getProperty('/menu')[4].main1);
+			      sap.ui.getCore().getElementById("friMain2").setValue(oModel.getProperty('/menu')[4].main2);
+			      sap.ui.getCore().getElementById("friMain3").setValue(oModel.getProperty('/menu')[4].mainveg);
+			      sap.ui.getCore().getElementById("friDessert").setValue(oModel.getProperty('/menu')[4].dessert);
+			      
+			      },
+				  error: function(){
+				    
+				  }
+		});
+ 	}
+ 	
+    function clearFields(){
+    	sap.ui.getCore().getElementById("monStarter1").setValue("");
+	      sap.ui.getCore().getElementById("monStarter2").setValue("");
+	      sap.ui.getCore().getElementById("monMain1").setValue("");
+	      sap.ui.getCore().getElementById("monMain2").setValue("");
+	      sap.ui.getCore().getElementById("monMain3").setValue("");
+	      sap.ui.getCore().getElementById("monDessert").setValue("");
+	      
+	      sap.ui.getCore().getElementById("tueStarter1").setValue("");
+	      sap.ui.getCore().getElementById("tueStarter2").setValue("");
+	      sap.ui.getCore().getElementById("tueMain1").setValue("");
+	      sap.ui.getCore().getElementById("tueMain2").setValue("");
+	      sap.ui.getCore().getElementById("tueMain3").setValue("");
+	      sap.ui.getCore().getElementById("tueDessert").setValue("");
+	      
+	      sap.ui.getCore().getElementById("wedStarter1").setValue("");
+	      sap.ui.getCore().getElementById("wedStarter2").setValue("");
+	      sap.ui.getCore().getElementById("wedMain1").setValue("");
+	      sap.ui.getCore().getElementById("wedMain2").setValue("");
+	      sap.ui.getCore().getElementById("wedMain3").setValue("");
+	      sap.ui.getCore().getElementById("wedDessert").setValue("");
+	      
+	      sap.ui.getCore().getElementById("thuStarter1").setValue("");
+	      sap.ui.getCore().getElementById("thuStarter2").setValue("");
+	      sap.ui.getCore().getElementById("thuMain1").setValue("");
+	      sap.ui.getCore().getElementById("thuMain2").setValue("");
+	      sap.ui.getCore().getElementById("thuMain3").setValue("");
+	      sap.ui.getCore().getElementById("thuDessert").setValue("");
+	      
+	      sap.ui.getCore().getElementById("friStarter1").setValue("");
+	      sap.ui.getCore().getElementById("friStarter2").setValue("");
+	      sap.ui.getCore().getElementById("friMain1").setValue("");
+	      sap.ui.getCore().getElementById("friMain2").setValue("");
+	      sap.ui.getCore().getElementById("friMain3").setValue("");
+	      sap.ui.getCore().getElementById("friDessert").setValue("");
+    }
+ 	
+	function updateMenu(){
+		sap.ui.core.BusyIndicator.show();
+		var menuJSON = {"menu":[
+		                 {"date": monDate,
+							"day":"Monday",
+							"dessert": sap.ui.getCore().getElementById("monDessert").getValue(),
+							"main1": sap.ui.getCore().getElementById("monMain1").getValue(),
+							"main2": sap.ui.getCore().getElementById("monMain2").getValue(),
+							"mainveg": sap.ui.getCore().getElementById("monMain3").getValue(),
+							"starter1": sap.ui.getCore().getElementById("monStarter1").getValue(),
+							"starter2": sap.ui.getCore().getElementById("monStarter2").getValue()},
+						{"date":tueDate,
+								"day":"Tuesday",
+								"dessert":sap.ui.getCore().getElementById("tueDessert").getValue(),
+								"main1":sap.ui.getCore().getElementById("tueMain1").getValue(),
+								"main2":sap.ui.getCore().getElementById("tueMain2").getValue(),
+								"mainveg":sap.ui.getCore().getElementById("tueMain3").getValue(),
+								"starter1":sap.ui.getCore().getElementById("tueStarter1").getValue(),
+								"starter2":sap.ui.getCore().getElementById("tueStarter2").getValue()},
+						{"date":wedDate,
+								"day":"Wednesday",
+								"dessert":sap.ui.getCore().getElementById("wedDessert").getValue(),
+								"main1":sap.ui.getCore().getElementById("wedMain1").getValue(),
+								"main2":sap.ui.getCore().getElementById("wedMain2").getValue(),
+								"mainveg":sap.ui.getCore().getElementById("wedMain3").getValue(),
+								"starter1":sap.ui.getCore().getElementById("wedStarter1").getValue(),
+								"starter2":sap.ui.getCore().getElementById("wedStarter2").getValue()},
+						{"date":thuDate,
+								"day":"Thursday",
+								"dessert":sap.ui.getCore().getElementById("thuDessert").getValue(),
+								"main1":sap.ui.getCore().getElementById("thuMain1").getValue(),
+								"main2":sap.ui.getCore().getElementById("thuMain2").getValue(),
+								"mainveg":sap.ui.getCore().getElementById("thuMain3").getValue(),
+								"starter1":sap.ui.getCore().getElementById("thuStarter1").getValue(),
+								"starter2":sap.ui.getCore().getElementById("thuStarter2").getValue()},
+						{"date":friDate,
+								"day":"Friday",
+								"dessert":sap.ui.getCore().getElementById("friDessert").getValue(),
+								"main1":sap.ui.getCore().getElementById("friMain1").getValue(),
+								"main2":sap.ui.getCore().getElementById("friMain2").getValue(),
+								"mainveg":sap.ui.getCore().getElementById("friMain3").getValue(),
+								"starter1":sap.ui.getCore().getElementById("friStarter1").getValue(),
+								"starter2":sap.ui.getCore().getElementById("friStarter2").getValue()}
+						]};
+		
+		var Menu = Parse.Object.extend("gMenu");
+		var menu = new Menu();
+		 
+		menu.set("JSONMenu", menuJSON);
+		 
+		menu.save(null, {
+			success: function(menu) {
+			    sap.ui.core.BusyIndicator.hide();
+			    sap.m.MessageToast.show("Galway menu saved at " + menu.createdAt);  
+			  },
+			  error: function(menu, error) {
+			    sap.ui.core.BusyIndicator.hide();
+			    alert('Failed to save menu, with error code: ' + error.message);
+			  }
+		});
+	
+	}
+		var monDate;
+		var tueDate;
+		var wedDate;
+		var ThuDate;
+		var friDate;
+        var oShell = new sap.ui.ux3.Shell("menuShell", {    
+            appIcon : "http://www.sap.com/global/images/SAPLogo.gif", 
+            appTitle : "Menu",
+        });
+        oShell.addWorksetItem(new sap.ui.ux3.NavigationItem({key : "wi_galway",   text : "Update Galway Menu"}));
+		updateView = new sap.ui.view({id:"updateMenu", viewName:"menuAdmin.menu", type:sap.ui.core.mvc.ViewType.JS});    
+       	oShell.setContent(updateView);
+       	oShell.placeAt("shellArea");
+		Parse.initialize("gar1pcHESbLE9dolZdh71VvCzoHjO4gg8xJKo3YW", "NObSUGsIFbVVe0ndAPu2M19NV2szDEPeicGO38nO");
+        dataLoad();
+        </script>
+</head>
+
+ 
+<body class="sapUiBody" >
+     <!-- And here is the div element shellArea where  the shell element will be posted to-->
+     <div id="shellArea"></div>
+</body>
+
+</html>
